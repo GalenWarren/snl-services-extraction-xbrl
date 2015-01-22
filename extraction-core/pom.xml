@@ -2,21 +2,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.snl.services.extraction.xbrl</groupId>
   <artifactId>extraction-core</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <name>${project.artifactId}</name>
-  <description>My wonderfull scala app</description>
-  <inceptionYear>2010</inceptionYear>
-  <licenses>
-    <license>
-      <name>My License</name>
-      <url>http://....</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
+  <description>XBRL-assisted extraction</description>
+  <inceptionYear>2014</inceptionYear>
 
   <properties>
-    <maven.compiler.source>1.6</maven.compiler.source>
-    <maven.compiler.target>1.6</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.compiler.target>1.7</maven.compiler.target>
     <encoding>UTF-8</encoding>
     <scala.tools.version>2.10</scala.tools.version>
     <scala.version>2.10.0</scala.version>
