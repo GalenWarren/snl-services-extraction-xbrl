@@ -1,0 +1,35 @@
+{
+	"values": [
+	
+		{
+			"concept": "assets",
+			"context": "123114",
+			"location": "t_html:1"
+		},
+		{
+			"concept": "assets",
+			"context": "123113",
+			"location": "t_html:2"
+		},
+		{
+			"concept": "netincome",
+			"context": "123114Y",
+			"location": "t_html:3"
+		},
+		{
+			"concept": "netincome",
+			"context": "123113Y",
+			"location": "t_html:4"
+		}
+	],
+	
+	"tables": [
+		
+		{
+			"concept": "highlights",
+			"values": [ 0, 1, 2, 3 ]
+		}
+	
+	]
+	
+}

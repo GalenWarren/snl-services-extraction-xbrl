@@ -40,4 +40,9 @@ build.log
 #SHITTY output not in target directory
 build.log
 
+# mvn cache
 .cache
+
+# output and lib files
+output
+lib

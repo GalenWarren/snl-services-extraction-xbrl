@@ -9,29 +9,36 @@ import com.typesafe.config._
 /**
  * The configuration extension
  */
-class Configuration ( config: Config ) extends Extension {
+class Configuration ( config: Config ) {
 
   /**
    * The name of the application
    */
   val appName = config.getString("snl.services.extraction.xbrl.appName")
   
-}
-
-object Configuration extends ExtensionId[Configuration] with ExtensionIdProvider {
-
   /**
-   * Lookup value for this extension
+   * The document context
    */
-  override def lookup = Configuration
+  val context = config.getString("snl.services.extraction.xbrl.context")
   
   /**
-   * Create the extension
+   * The mapping candidates
    */
-  override def createExtension( system: ExtendedActorSystem ) = new Configuration( system.settings.config )
+  val input = config.getString("snl.services.extraction.xbrl.input")
   
   /**
-   * Helper to get a duration from a config file
+   * The output file to write the scored candidates to
    */
-  def getDuration( config: Config, name: String, unit: TimeUnit = TimeUnit.MILLISECONDS ) = Duration( config.getDuration(name, unit), unit )
+  val output = config.getString("snl.services.extraction.xbrl.output")
+  
+  /**
+   * The number of scored candidates to return
+   */
+  val count = config.getInt("snl.services.extraction.xbrl.count")
+  
+  /**
+   * The number of partitions to use for processing candidates
+   */
+  val partitionCount = config.getInt("snl.services.extraction.xbrl.partitionCount")
 }
+
