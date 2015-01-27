@@ -10,7 +10,7 @@ case class Candidate( values: List[CandidateValue], tables: List[CandidateTable]
    */
   def score( documentContext: DocumentContext ) : Double = {
     
-    Point.compactness(  documentContext.locationMap.values )
+    Math.pearson(documentContext.locationMap.values.map( _.point ))
     0
   }
   

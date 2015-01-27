@@ -58,6 +58,11 @@
     	<artifactId>json4s-jackson_2.10</artifactId>
     	<version>3.2.11</version>
     </dependency>
+    <dependency>
+    	<groupId>org.scalanlp</groupId>
+    	<artifactId>breeze_2.10</artifactId>
+    	<version>0.10</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -98,6 +103,7 @@
           <includes>
             <include>**/*Test.*</include>
             <include>**/*Suite.*</include>
+            <include>**/*Spec.*</include>
           </includes>
         </configuration>
       </plugin>

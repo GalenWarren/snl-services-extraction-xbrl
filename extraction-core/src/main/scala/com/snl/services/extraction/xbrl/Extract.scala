@@ -64,12 +64,15 @@ object Extract extends App with Logging {
    * Startup
    */
   private def execute() {
+
+    // broadcast the config
+    val broadcastConfig = sparkContext.broadcast(config)
     
-    // the ordering for scored candidates
-	implicit val scoredCandidateOrdering = new ScoredCandidateOrdering()
-	  
 	// broadcast the context
 	val broadcastDocumentContext = sparkContext.broadcast(documentContext) 
+
+    // the ordering for scored candidates
+	implicit val scoredCandidateOrdering = new ScoredCandidateOrdering()
 	  
 	// score the candidates
 	val scoredCandidates = sparkContext.wholeTextFiles( config.input, config.partitionCount ).values
