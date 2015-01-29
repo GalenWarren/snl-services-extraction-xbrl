@@ -59,9 +59,9 @@
     	<version>3.2.11</version>
     </dependency>
     <dependency>
-    	<groupId>org.scalanlp</groupId>
-    	<artifactId>breeze_2.10</artifactId>
-    	<version>0.10</version>
+    	<groupId>org.apache.commons</groupId>
+    	<artifactId>commons-math3</artifactId>
+    	<version>3.4.1</version>
     </dependency>
   </dependencies>
 
