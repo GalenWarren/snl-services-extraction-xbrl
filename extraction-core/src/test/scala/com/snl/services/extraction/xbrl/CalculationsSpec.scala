@@ -104,4 +104,32 @@ class CalculationsSpec extends FunSpec with Matchers with Assertions {
     
   }
 
+  /**
+   * Test variations
+   */
+  describe( "Variations" ) {
+    
+    it ("should be generated properly for a 4 element set taken 4 at a time") {
+      val variations = Calculations.variations( Array("a","b","c","d"), 4 ).toSeq
+      variations.length should be (24)
+    }
+    
+    it ("should be generated properly for a 4 element set taken 3 at a time") {
+      val variations = Calculations.variations( Array("a","b","c","d"), 3 ).toSeq
+      variations.length should be (24)
+    }
+    
+    it ("should be generated properly for a 4 element set taken 2 at a time") {
+      val variations = Calculations.variations( Array("a","b","c","d"), 2 ).toSeq
+      variations.length should be (12)
+    }
+    
+    it ("should be generated properly for a 4 element set taken 1 at a time") {
+      val variations = Calculations.variations( Array("a","b","c","d"), 1 ).toSeq
+      variations.length should be (4)
+    }
+    
+  }
+  
+  
 }

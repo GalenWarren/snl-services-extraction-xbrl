@@ -43,6 +43,7 @@ build.log
 # mvn cache
 .cache
 
-# output and lib files
+# input, output and lib files
+input
 output
 lib

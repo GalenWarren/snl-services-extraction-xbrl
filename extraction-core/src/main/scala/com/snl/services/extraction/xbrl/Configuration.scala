@@ -17,11 +17,6 @@ class Configuration ( config: Config ) {
   val appName = config.getString("snl.services.extraction.xbrl.appName")
   
   /**
-   * The document context
-   */
-  val context = config.getString("snl.services.extraction.xbrl.context")
-  
-  /**
    * The mapping candidates
    */
   val input = config.getString("snl.services.extraction.xbrl.input")

@@ -63,6 +63,11 @@
     	<artifactId>commons-math3</artifactId>
     	<version>3.4.1</version>
     </dependency>
+    <dependency>
+    	<groupId>com.googlecode.combinatoricslib</groupId>
+    	<artifactId>combinatoricslib</artifactId>
+    	<version>2.1</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -123,16 +128,12 @@
 	      <mainClass>com.snl.services.extraction.xbrl.Extract</mainClass>
 	      <systemProperties>
 	      	<systemProperty>
-	      	  <key>snl.services.extraction.xbrl.context</key>
-	      	  <value>/home/galen/snl-services-extraction-xbrl/extraction-core/data/sample1/context.json</value>
-	      	</systemProperty>
-	      	<systemProperty>
 	      	  <key>snl.services.extraction.xbrl.input</key>
-	      	  <value>/home/galen/snl-services-extraction-xbrl/extraction-core/data/sample1/candidate*.json</value>
+	      	  <value>/home/galen/snl-services-extraction-xbrl/extraction-core/data/sample1/input.json</value>
 	      	</systemProperty>
 	      	<systemProperty>
 	      	  <key>snl.services.extraction.xbrl.output</key>
-	      	  <value>/home/galen/snl-services-extraction-xbrl/extraction-core/output/sample1/scored.json</value>
+	      	  <value>/home/galen/snl-services-extraction-xbrl/extraction-core/output/sample1/output.json</value>
 	      	</systemProperty>
 	      </systemProperties>
 	    </configuration>

@@ -2,6 +2,7 @@ package com.snl.services.extraction.xbrl
 
 import org.apache.commons.math3.stat.descriptive._
 import org.apache.commons.math3.stat.correlation._
+import org.paukov.combinatorics._
 import scala.collection.JavaConverters._
 
 object Calculations {
@@ -13,6 +14,11 @@ object Calculations {
     stats.addValue( value )
     stats 
   })
+  
+  /**
+   * Computes the weighted average of a sequence of (value,weight) tuples 
+   */
+  def weightedAverage( values: Seq[(Double,Double)]) : Double = values.map( _._1 ).sum / values.map( _._2 ).sum
   
   /**
    * Measures the variance of a cluster of points, e.g. average squared distance from the mean
@@ -47,6 +53,19 @@ object Calculations {
   def linearity( points: Iterable[(Double,Double)] ) : Double = pearson( points ) match {
     case n : Double if n.isNaN => 1
     case v : Double => v * v
+  }
+  
+  /**
+   * Returns the variations of the given size of a set of elements -- kgw need to handle case where size > elements.length, e.g. must pad
+   * and returns Option[T] in the inner array, not T
+   */
+  def variations[T <: AnyRef ]( elements: Array[T], size: Int ) : Iterable[Iterable[T]] = {
+
+    for {
+      combination <- Factory.createSimpleCombinationGenerator( Factory.createVector( elements ), size).asScala
+      permutation <- Factory.createPermutationGenerator(combination).asScala
+    } yield permutation.asScala
+    
   }
   
 }

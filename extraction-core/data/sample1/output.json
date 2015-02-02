@@ -1,0 +1,16 @@
+{
+	mappings: [
+	
+		{
+			"score": 0.5,
+			"locations": {
+				"pres1": "t_html:1",
+				"pres2": "t_html:2",
+				"pres3": "t_html:3",
+				"pres4": "t_html:4"
+			}
+		}
+	
+	] 	
+	
+}

@@ -1,0 +1,44 @@
+{
+	"tables": {
+	
+		"table1": {
+		
+			"1": [
+				{ "node": "pres1", "groups": ["assets", "12/31/13"] },
+				{ "node": "pres3", "groups": ["equity", "12/31/14"] }
+			],
+			
+			"12": [
+				{ "node": "pres4", "groups": ["assets", "12/31/14"] }
+			],
+			
+			"13": [
+				{ "node": "pres2", "groups": ["equity", "12/31/13"] }
+			]
+			
+		}
+	
+	},
+	
+	
+	"locations": {
+	
+		"1": [
+			{ "x":50, "y":100, "location": "t_html:1" },
+			{ "x":51, "y":100, "location": "t_html:2" }
+		],
+		
+		"12": [
+			{ "x":60, "y":100, "location": "t_html:3" },
+			{ "x":61, "y":100, "location": "t_html:4" }
+		],
+		
+		"13": [
+			{ "x":60, "y":100, "location": "t_html:5" },
+			{ "x":61, "y":100, "location": "t_html:6" }
+		]
+	
+	}
+	
+}
+	
