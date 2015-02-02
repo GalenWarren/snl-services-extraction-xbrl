@@ -6,4 +6,4 @@ import org.json4s.jackson.JsonMethods._
 /**
  * The input structure
  */
-case class Input( tables: Map[String,Map[String,List[PresentationNode]]], locations: Map[String,List[Location]]) 
+case class Input( tables: Map[String,Map[String,List[PresentationNode]]], locations: Map[String,List[ValueLocation]]) 

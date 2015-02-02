@@ -15,7 +15,7 @@ import org.json4s.jackson.Serialization.{read, write}
 /**
  * The main actor for the extraction 
  */
-object Extract extends App with Logging {
+object Score extends App with Logging {
   
   /**
    * The configuration instance
@@ -56,13 +56,6 @@ object Extract extends App with Logging {
       source.close()
     }
   }
-
-  /**
-   * Scores a permutation
-   */
-  def scoreVariation( variation: Seq[(PresentationNode,Location)], config: Configuration ) : Double =  {
-    0.0
-  }
   
   /**
    * Run
@@ -86,7 +79,7 @@ object Extract extends App with Logging {
     )) 
     
     // now, take the cartesian product of value-level variations to get the table-level variations
-    val variationsOption = variationsByValue.foldLeft(None: Option[RDD[List[(PresentationNode,Location)]]])((rddOption, entry) => rddOption match {
+    val variationsOption = variationsByValue.foldLeft(None: Option[RDD[List[(PresentationNode,ValueLocation)]]])((rddOption, entry) => rddOption match {
       case Some(rdd) => Some( rdd.cartesian( entry._2 ).map( p => p._1.union( p._2)))
       case None => Some( entry._2 )
     })
@@ -96,15 +89,17 @@ object Extract extends App with Logging {
       
       case Some(variations) => {
 
+        logger.info( "AAA Processing %d variations".format( variations.count()))
+        
         // kgw repartition here before scoring?
         // score the variations and take the best N -- kgw set N properly
-    	val scoredMappings = variations
-    	  .map( v => ( scoreVariation(v, broadcastConfig.value), v ))
-    	  .takeOrdered(2)(new ScoredOrdering())
-    	  .map( p => ScoredMapping( p._1, p._2.map( m => ( m._1.node, m._2.location)).toMap))
+    	val scoredVariations = variations
+    	  .map( v => ( ScoredVariation.score(v, broadcastConfig.value), v ))
+    	  .takeOrdered( broadcastConfig.value.count )(new ScoredOrdering())
+    	  .map( p => ScoredVariation( p._1, p._2.map( m => ( m._1.node, m._2.location)).toMap))
         
     	// the output object
-    	val output = Output( scoredMappings.toList )
+    	val output = Output( scoredVariations.toList )
     	logger.info( "AAA %s".format(output))
         
       }

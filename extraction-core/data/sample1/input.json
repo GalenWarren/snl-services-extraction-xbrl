@@ -1,43 +1,73 @@
 {
 	"tables": {
 	
-		"table1": {
-		
+		"balanceSheet": {
+			
 			"1": [
-				{ "node": "pres1", "groups": ["assets", "12/31/13"] },
-				{ "node": "pres3", "groups": ["equity", "12/31/14"] }
+				{ "node": "D2", "groups": ["assets", "12/31/12"] }
 			],
-			
+			"11": [
+				{ "node": "C2", "groups": ["assets", "12/31/13"] }
+			],
 			"12": [
-				{ "node": "pres4", "groups": ["assets", "12/31/14"] }
+				{ "node": "B2", "groups": ["assets", "12/31/14"] }
 			],
-			
-			"13": [
-				{ "node": "pres2", "groups": ["equity", "12/31/13"] }
+			"2": [
+				{ "node": "D3", "groups": ["equity", "12/31/12"] }
+			],
+			"21": [
+				{ "node": "C3", "groups": ["equity", "12/31/13"] }
+			],
+			"22": [
+				{ "node": "B3", "groups": ["equity", "12/31/14"] }
+			],
+			"3": [
+				{ "node": "D4", "groups": ["loans", "12/31/12"] }
+			],
+			"31": [
+				{ "node": "C4", "groups": ["loans", "12/31/13"] }
+			],
+			"32": [
+				{ "node": "B4", "groups": ["loans", "12/31/14"] }
 			]
-			
 		}
 	
 	},
 	
 	
 	"locations": {
-	
+
 		"1": [
-			{ "x":50, "y":100, "location": "t_html:1" },
-			{ "x":51, "y":100, "location": "t_html:2" }
+			{ "x":2, "y":4, "location": "t_html:D2" }
 		],
-		
+		"11": [
+			{ "x":2, "y":3, "location": "t_html:C2" },
+			{ "x":7, "y":3, "location": "t_html:C7" }
+		],
 		"12": [
-			{ "x":60, "y":100, "location": "t_html:3" },
-			{ "x":61, "y":100, "location": "t_html:4" }
+			{ "x":2, "y":2, "location": "t_html:B2" }
 		],
-		
-		"13": [
-			{ "x":60, "y":100, "location": "t_html:5" },
-			{ "x":61, "y":100, "location": "t_html:6" }
+		"2": [
+			{ "x":3, "y":4, "location": "t_html:D3" }
+		],
+		"21": [
+			{ "x":3, "y":3, "location": "t_html:C3" },
+			{ "x":8, "y":3, "location": "t_html:C8" }
+		],
+		"22": [
+			{ "x":3, "y":2, "location": "t_html:B3" }
+		],
+		"3": [
+			{ "x":4, "y":4, "location": "t_html:D4" }
+		],
+		"31": [
+			{ "x":4, "y":3, "location": "t_html:C4" },
+			{ "x":9, "y":3, "location": "t_html:C9" }
+		],
+		"32": [
+			{ "x":4, "y":2, "location": "t_html:B4" }
 		]
-	
+		
 	}
 	
 }

@@ -3,4 +3,4 @@ package com.snl.services.extraction.xbrl
 /**
  * The class for the output from the extract process
  */
-case class Output( mappings: List[ScoredMapping])
+case class Output( variations: List[ScoredVariation])
