@@ -8,12 +8,12 @@ case class ScoredVariation ( score: Double, locations: Map[String,String])
 object ScoredVariation {
   
   /**
-   * Scores a variation
+   * Scores a set
    */
-  def score( variation: Seq[(PresentationNode,ValueLocation)], config: Configuration ) : Double =  {
+  def score( set: Seq[ValueLocation], config: Configuration ) : Double =  {
     
     // calculate the compactness of the locations in this variation 
-    Calculations.compactness( variation.map( _._2.tuple))
+    Calculations.compactness( set.map( _.tuple))
         
   }  
   

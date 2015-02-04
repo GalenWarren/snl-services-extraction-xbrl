@@ -3,11 +3,11 @@ package com.snl.services.extraction.xbrl
 /**
  * Ordering for a scored tuple
  */
-class ScoredOrdering[T] extends Ordering[(Double,T)] {
+class ScoredOrdering[T] extends Ordering[(T,Double)] {
   
   /**
    * Compare on the first element, in descending order
    */
-  def compare( x: (Double,T), y: (Double,T)) = y._1.compare( x._1 )
+  def compare( x: (T,Double), y: (T,Double)) = y._2.compare( x._2 )
 
 }

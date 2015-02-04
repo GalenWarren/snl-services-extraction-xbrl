@@ -2,6 +2,7 @@ package com.snl.services.extraction.xbrl
 
 import org.apache.commons.math3.stat.descriptive._
 import org.apache.commons.math3.stat.correlation._
+import org.apache.commons.math3.ml.clustering._ 
 import org.paukov.combinatorics._
 import scala.collection.JavaConverters._
 
@@ -56,6 +57,15 @@ object Calculations {
   }
   
   /**
+   * Returns combinations of a set of elements of a given size
+   */
+  def combinations[T <: AnyRef ]( elements: Array[T], size: Int ) : Iterable[Iterable[T]] = {
+    for {
+      combination <- Factory.createSimpleCombinationGenerator( Factory.createVector( elements ), size).asScala
+    } yield combination.asScala
+  }
+  
+  /**
    * Returns the variations of the given size of a set of elements -- kgw need to handle case where size > elements.length, e.g. must pad
    * and returns Option[T] in the inner array, not T
    */
@@ -65,7 +75,19 @@ object Calculations {
       combination <- Factory.createSimpleCombinationGenerator( Factory.createVector( elements ), size).asScala
       permutation <- Factory.createPermutationGenerator(combination).asScala
     } yield permutation.asScala
+  }
+  
+  /**
+   * Generates clusters with a given epsilon and minimum points, using DBSCAN
+   */
+  def clusters[ T <: Clusterable ]( elements: Iterable[T], epsilon: Double, minimumPoints: Int ) : Iterable[Iterable[T]] = {
     
+    // generate the clusters
+    val clusterer = new DBSCANClusterer[T]( epsilon, minimumPoints, new VerticalDistance())
+    val clusters = clusterer.cluster( elements.asJavaCollection).asScala
+    
+    // convert to the return type
+    clusters.map( cluster => cluster.getPoints().asScala.toIterable).toIterable
   }
   
 }

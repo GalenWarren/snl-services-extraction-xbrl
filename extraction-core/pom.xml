@@ -129,11 +129,11 @@
 	      <systemProperties>
 	      	<systemProperty>
 	      	  <key>snl.services.extraction.xbrl.input</key>
-	      	  <value>/home/galen/snl-services-extraction-xbrl/extraction-core/data/sample1/input.json</value>
+	      	  <value>/home/galen/snl-services-extraction-xbrl/extraction-core/input/sona093014/input.json</value>
 	      	</systemProperty>
 	      	<systemProperty>
 	      	  <key>snl.services.extraction.xbrl.output</key>
-	      	  <value>/home/galen/snl-services-extraction-xbrl/extraction-core/output/sample1/output.json</value>
+	      	  <value>/home/galen/snl-services-extraction-xbrl/extraction-core/output/sona093014/output.json</value>
 	      	</systemProperty>
 	      </systemProperties>
 	    </configuration>
