@@ -2,8 +2,9 @@ package com.snl.services.extraction.xbrl
 
 import org.apache.commons.math3.stat.descriptive._
 import org.apache.commons.math3.stat.correlation._
-import org.apache.commons.math3.ml.clustering._ 
-import org.paukov.combinatorics._
+import org.apache.commons.math3.ml.clustering._
+import org.apache.commons.math3.util.CombinatoricsUtils
+//import org.paukov.combinatorics._
 import scala.collection.JavaConverters._
 
 object Calculations {
@@ -59,16 +60,18 @@ object Calculations {
   /**
    * Returns combinations of a set of elements of a given size
    */
-  def combinations[T <: AnyRef ]( elements: Array[T], size: Int ) : Iterable[Iterable[T]] = {
-    for {
-      combination <- Factory.createSimpleCombinationGenerator( Factory.createVector( elements ), size).asScala
-    } yield combination.asScala
+  def combinations[T]( elements: IndexedSeq[T], size: Int ) : Iterator[Iterable[T]] = {
+    
+    // iterate the indexes for each combination
+    for (indexes <- CombinatoricsUtils.combinationsIterator( elements.length, size).asScala) 
+    	yield indexes.map( index => elements(index)).toIterable
   }
   
   /**
    * Returns the variations of the given size of a set of elements -- kgw need to handle case where size > elements.length, e.g. must pad
    * and returns Option[T] in the inner array, not T
    */
+  /*
   def variations[T <: AnyRef ]( elements: Array[T], size: Int ) : Iterable[Iterable[T]] = {
 
     for {
@@ -76,6 +79,7 @@ object Calculations {
       permutation <- Factory.createPermutationGenerator(combination).asScala
     } yield permutation.asScala
   }
+  */
   
   /**
    * Generates clusters with a given epsilon and minimum points, using DBSCAN

@@ -35,5 +35,10 @@ class Configuration ( config: Config ) {
    * The number of partitions to use for processing candidates
    */
   val partitionCount = config.getInt("snl.services.extraction.xbrl.partitionCount")
+  
+  /**
+   * The maximum number of location combinations we'll process
+   */
+  val maxLocationCombinations = config.getInt("snl.services.extraction.xbrl.maxLocationCombinations")
 }
 

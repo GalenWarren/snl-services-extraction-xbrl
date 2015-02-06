@@ -131,7 +131,7 @@ class CalculationsSpec extends FunSpec with Matchers with Assertions {
     
   }
   
-  
+  /*
   /**
    * Test variations
    */
@@ -158,6 +158,6 @@ class CalculationsSpec extends FunSpec with Matchers with Assertions {
     }
     
   }
-  
+  */
   
 }
