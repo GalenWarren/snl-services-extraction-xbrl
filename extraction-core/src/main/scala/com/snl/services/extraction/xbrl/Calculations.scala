@@ -4,10 +4,10 @@ import org.apache.commons.math3.stat.descriptive._
 import org.apache.commons.math3.stat.correlation._
 import org.apache.commons.math3.ml.clustering._
 import org.apache.commons.math3.util.CombinatoricsUtils
-//import org.paukov.combinatorics._
 import scala.collection.JavaConverters._
+import grizzled.slf4j._ 
 
-object Calculations {
+object Calculations extends Logging {
   
   /**
    * Helper to create summary statistics for a series of values 
@@ -56,15 +56,70 @@ object Calculations {
     case n : Double if n.isNaN => 1
     case v : Double => v * v
   }
+
+  /**
+   * Determines the count of combinations
+   */
+  def combinationsCount( elementCount: Int, size: Int ) : Double = {
+    CombinatoricsUtils.factorialDouble(elementCount) / ((CombinatoricsUtils.factorialDouble(size)) * (CombinatoricsUtils.factorialDouble(elementCount - size)))
+  }
   
   /**
    * Returns combinations of a set of elements of a given size
    */
-  def combinations[T]( elements: IndexedSeq[T], size: Int ) : Iterator[Iterable[T]] = {
+  def combinations[T]( elements: IndexedSeq[T], size: Int ) : Iterable[Iterable[T]] = {
     
     // iterate the indexes for each combination
-    for (indexes <- CombinatoricsUtils.combinationsIterator( elements.length, size).asScala) 
-    	yield indexes.map( index => elements(index)).toIterable
+    (
+        for (indexes <- CombinatoricsUtils.combinationsIterator( elements.length, size).asScala) 
+        	yield indexes.map( index => elements(index)).toIterable
+        	
+    ).toIterable
+    
+  }
+  
+  /**
+   * Returns the combinations of things with clustering applied internally, automatically, if the number of combinations
+   * at any point exceeds a threshold
+   */
+  def combinations[T <: Clusterable ](
+      
+      elements: IndexedSeq[T], 
+      size: Int, 
+      maxDepth: Int,
+      clusterThreshold: Double, 
+      cluster: (Iterable[T], Double) => Iterable[Iterable[T]],
+      depth: Int = 0
+      
+  ) : Iterable[Iterable[T]] = {
+    
+    // test the count of combinations
+    combinationsCount( elements.length, size ) match {
+      
+      // if we're below the threshold, just get the combinations
+      case count if ((count < clusterThreshold) || (depth >= maxDepth)) => {
+        
+        //logger.info( "Processing count of %f".format( count ))
+        
+        combinations( elements, size )
+      } 
+      
+      // otherwise, we'll cluster first and then combine the results against the clusters
+      case breakableCount => {
+        
+        //logger.info( "Breaking apart count of %f".format( breakableCount ))
+        
+        cluster( elements, breakableCount )
+      	  .map( c => { 
+      	    val seq = c.toIndexedSeq
+      	    combinations( seq, Math.min( size, seq.length ), maxDepth, clusterThreshold, cluster, depth + 1 )
+      	  })
+	      .foldLeft( Iterable.empty[Iterable[T]])( (result, elements) => result ++ elements )
+        
+      } 
+      
+    }
+    
   }
   
   /**
@@ -84,7 +139,7 @@ object Calculations {
   /**
    * Generates clusters with a given epsilon and minimum points, using DBSCAN
    */
-  def clusters[ T <: Clusterable ]( elements: Iterable[T], epsilon: Double, minimumPoints: Int ) : Iterable[Iterable[T]] = {
+  def dbScanClusters[ T <: Clusterable ]( elements: Iterable[T], epsilon: Double, minimumPoints: Int ) : Iterable[Iterable[T]] = {
     
     // generate the clusters
     val clusterer = new DBSCANClusterer[T]( epsilon, minimumPoints, new VerticalDistance())
@@ -92,6 +147,20 @@ object Calculations {
     
     // convert to the return type
     clusters.map( cluster => cluster.getPoints().asScala.toIterable).toIterable
+  }
+
+  /**
+   * Generates clusters via k-means
+   */
+  def kMeansClusters[ T <: Clusterable ]( elements: Iterable[T], count: Int, maxIterations: Int ) : Iterable[Iterable[T]] = {
+    
+    // generate the clusters
+    val clusterer = new KMeansPlusPlusClusterer[T]( count, maxIterations, new VerticalDistance())
+    val clusters = clusterer.cluster( elements.asJavaCollection).asScala
+    
+    // convert to the return type
+    clusters.map( cluster => cluster.getPoints().asScala.toIterable).toIterable
+    
   }
   
 }

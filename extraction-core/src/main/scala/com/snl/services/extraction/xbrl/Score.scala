@@ -14,11 +14,17 @@ import org.json4s.jackson.JsonMethods._
 import org.json4s.jackson.Serialization
 import org.json4s.jackson.Serialization.{read, write}
 import org.apache.commons.math3.util.CombinatoricsUtils._
+import org.apache.log4j._
 
 /**
  * The main actor for the extraction 
  */
 object Score extends App with Logging {
+  
+  /**
+   * Configure default logging
+   */
+  BasicConfigurator.configure()   
   
   /**
    * The configuration instance
@@ -64,10 +70,66 @@ object Score extends App with Logging {
   }
 
   /**
+   * The table nodes, grouped by table and then by value
+   */
+  private lazy val nodesByTableAndValue = input.nodes.groupBy( _.tableIndex ).mapValues( _.groupBy( _.value))
+
+  /**
+   * The locations, grouped by value
+   */
+  private lazy val locationsByValue = input.locations.groupBy( _.value )
+
+  /**
    * Run
    */
   private def run() {
 
+    // loop through the tables
+    for (( tableIndex, nodesByValue ) <- nodesByTableAndValue )  {
+
+      // look through values
+      val valueCombinations = nodesByValue.take(5).map( t => locationsByValue.get( t._1 ) match {
+          
+        case Some(locations) => {
+          
+          logger.info( "Processing %d locations".format( locations.size ))
+          
+          // access the nodes
+          val nodes = t._2
+          
+          // determine the match size for this locations/nodes combination
+          val matchSize = Math.min( locations.length, nodes.length )
+    
+          // determine the threshold for sub clustering
+          val clusterThreshold = Math.max( matchSize, 10).toDouble
+    
+          // get the combinations
+          Calculations.combinations( 
+            locations, 
+            matchSize, 
+            10, 
+            clusterThreshold, 
+            (elements: Iterable[ValueLocation], count) => Calculations.kMeansClusters( elements, 2, 10 )
+          )
+        
+        }
+      
+        case None => Iterable.empty
+      
+      }).filter( t => !t.isEmpty )
+      
+      // pull together the combinations
+      val combinations = new CombinationIterator( valueCombinations.toArray).map( e => e.foldLeft(List[ValueLocation]())((c,e) => c++e ))
+      
+      //
+      // iterate the combinations
+      for (combination <- combinations ) {
+        logger.info( "Processing combination of size %d for tableIndex %d".format( combination.size, tableIndex ))
+      }
+    }
+    
+    
+    /*
     // broadcast the config
     val broadcastConfig = sparkContext.broadcast(config)
     
@@ -452,7 +514,7 @@ object Score extends App with Logging {
     // shut down
     logger.info( "Done, shutting down ...")
     sparkContext.stop()
-      
+      */
   }
   
   /**
