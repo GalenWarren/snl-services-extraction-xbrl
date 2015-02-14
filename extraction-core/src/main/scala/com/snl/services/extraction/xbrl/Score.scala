@@ -22,11 +22,6 @@ import org.apache.log4j._
 object Score extends App with Logging {
   
   /**
-   * Configure default logging
-   */
-  BasicConfigurator.configure()   
-  
-  /**
    * The configuration instance
    */
   private val config = new Configuration( ConfigFactory.load())
@@ -84,9 +79,43 @@ object Score extends App with Logging {
    */
   private def run() {
 
+    //BasicConfigurator.configure()   
+    
+    // generate a clustering model
+    val locations = sparkContext.parallelize( input.locations ).cache()
+    val locationVectors = locations.map( l => Vectors.dense( l.y )).cache()
+    val clusterModel = KMeans.train( locationVectors, 10, 20 )
+    val clusterIndexes = clusterModel.predict( locationVectors )
+    val locationsWithClusterIndexes = locations.zip( clusterIndexes )
+    
+    // generate the single-value map to clusters
+    val singleLocations = locations.groupBy( _.value ).filter( _._2.size == 1).map( _._2.head ).cache()
+    val singleLocationClusters = singleLocations.zip( clusterModel.predict( singleLocations.map( l => Vectors.dense( l.y)))).map( t => (t._1.value, t._2))
+    	.collect
+    	.toMap
+    
     // loop through the tables
-    for (( tableIndex, nodesByValue ) <- nodesByTableAndValue )  {
+    for (( tableIndex, nodesByValue ) <- nodesByTableAndValue ) {
+      
+      val xzx = singleLocationClusters.filter( s => true )
+      
+      // access the value
+      val values = nodesByValue.keys.toSet
+      
+      // figure out the single match vectors values -- kgw extend to use double, etc., matches if not enough single matches
+      val singleMatchVectors = locationsByValue
+        .filter(t => nodesByValue.contains( t._1 ))
+    	.filter( t => t._2.length == 1)
+    	.map( t => clusterModel.predict(Vectors.dense( t._2.head.y )))
+    	.groupBy( i => i )
+    	.mapValues( v => v.size )
 
+      for (( index, count ) <- singleMatchVectors) {
+    	  logger.info( "AAA %d:%d".format( index, count ))
+      }
+
+      
+      /*
       // look through values
       val valueCombinations = nodesByValue.take(5).map( t => locationsByValue.get( t._1 ) match {
           
@@ -126,8 +155,8 @@ object Score extends App with Logging {
       for (combination <- combinations ) {
         logger.info( "Processing combination of size %d for tableIndex %d".format( combination.size, tableIndex ))
       }
+      */
     }
-    
     
     /*
     // broadcast the config
@@ -510,11 +539,11 @@ object Score extends App with Logging {
       
     }
     */
+      */
     
     // shut down
     logger.info( "Done, shutting down ...")
     sparkContext.stop()
-      */
   }
   
   /**
